@@ -5,7 +5,7 @@ import api from './api';
 
 export const useFindPhotos = () => {
   const dispatch = useDispatch();
-  return useAsyncEffect(async (query) => {
+  return useAsyncEffect(async ({ query }: { query: string }) => {
     const { results } = await api.find({
       params: { query },
     });

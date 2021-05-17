@@ -30,7 +30,6 @@ export const getToken = async (code: string) => {
         grant_type: 'authorization_code',
       },
     });
-    console.log('🚀 ~ data', data);
     return data.access_token;
   } catch (error) {
     console.log('🚀 ~ error', error);

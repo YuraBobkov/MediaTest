@@ -8,6 +8,7 @@ export const useStyles = makeStyles(
     },
 
     list: {
+      listStyleType: 'none',
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fill, minmax(450px, 1fr))',
       gridGap: 0,

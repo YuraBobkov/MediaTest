@@ -1,32 +1,37 @@
 import { Button } from '@material-ui/core';
-import React, { FC, Fragment, useCallback, useMemo } from 'react';
+import React, { FC, Fragment, useCallback, useMemo, useState } from 'react';
 
 import SearchInput from 'src/components/SearchInput';
+import Spinner from 'src/components/Spinner';
 import config from 'src/config';
 import { useTypedSelector } from 'src/redux';
 import { useFindPhotos } from 'src/redux/entities/photos/hooks';
-import { getAllPhotos } from 'src/redux/entities/photos/selectors';
+import { getAllPhotosIds } from 'src/redux/entities/photos/selectors';
 import { getOptions } from 'src/utils/storage';
+import { useEffectState } from 'src/utils/useAsyncEffect';
 
 import Photo from './Photo';
 import { useStyles } from './styles';
 
 const Photos: FC = () => {
-  const classes = useStyles();
   const token = localStorage.getItem('token');
-  console.log('🚀 ~ token', token);
+  const classes = useStyles();
 
-  const findPhotosEffect = useFindPhotos();
+  const [query, setQuery] = useState('');
 
   const searchOptions = getOptions();
-  const photos = useTypedSelector(getAllPhotos);
+  const photosIds = useTypedSelector(getAllPhotosIds);
 
-  const handleSearch = useCallback(
-    (value) => {
-      findPhotosEffect.run(value);
-    },
-    [findPhotosEffect],
-  );
+  const findPhotosEffect = useFindPhotos();
+  const { pending } = useEffectState(findPhotosEffect);
+
+  const handleSearch = useCallback(() => {
+    findPhotosEffect.run({ query });
+  }, [findPhotosEffect, query]);
+
+  const handleChange = useCallback((value) => {
+    setQuery(value);
+  }, []);
 
   const loginButton = useMemo(
     () =>
@@ -58,14 +63,19 @@ const Photos: FC = () => {
   return (
     <Fragment>
       <div className={classes.nav}>
-        <SearchInput options={searchOptions} action={handleSearch} />
+        <SearchInput
+          options={searchOptions}
+          action={handleSearch}
+          onChange={handleChange}
+        />
         {loginButton}
       </div>
-      <div className={classes.list}>
-        {photos.map((photo) => (
-          <Photo key={photo.id} {...photo} />
+      <ul className={classes.list}>
+        {photosIds.map((id) => (
+          <Photo key={id} id={id as string} />
         ))}
-      </div>
+        {pending && <Spinner />}
+      </ul>
     </Fragment>
   );
 };

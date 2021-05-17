@@ -9,9 +9,10 @@ import { useStyles } from './styles';
 type Props = {
   options: any[] | null;
   action(a: string): void;
+  onChange(a: string): void;
 };
 
-const SearchInput: FC<Props> = ({ options, action }) => {
+const SearchInput: FC<Props> = ({ options, action, onChange }) => {
   const classes = useStyles();
 
   const ref = useRef<HTMLInputElement>(null);
@@ -32,6 +33,7 @@ const SearchInput: FC<Props> = ({ options, action }) => {
       <input
         ref={ref}
         autoComplete="off"
+        onChange={(event) => onChange(event.target.value)}
         list="id"
         className={classes.input}
         placeholder="Photo Search"

@@ -3,16 +3,15 @@ import { Favorite, FavoriteBorder } from '@material-ui/icons';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useLikePhoto, useUnlikePhoto } from 'src/redux/entities/photos/hooks';
-import { Photo as PhotoType } from 'src/redux/entities/photos/types';
 import { useStyles } from './styles';
+import { getPhotoById } from 'src/redux/entities/photos/selectors';
+import { useTypedSelector } from 'src/redux';
 
-type Props = Pick<
-  PhotoType,
-  'urls' | 'alt_description' | 'id' | 'liked_by_user'
->;
+type Props = { id: string };
 
-const Photo: FC<Props> = ({ urls, alt_description, id, liked_by_user }) => {
+const Photo: FC<Props> = ({ id }) => {
   const classes = useStyles();
+  const photo = useTypedSelector((state) => getPhotoById(state, id))!;
 
   const [spans, setSpans] = useState(0);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -21,8 +20,8 @@ const Photo: FC<Props> = ({ urls, alt_description, id, liked_by_user }) => {
   const unlikeEffect = useUnlikePhoto();
 
   const handleClick = useCallback(
-    () => (liked_by_user ? unlikeEffect.run(id) : likeEffect.run(id)),
-    [id, likeEffect, liked_by_user, unlikeEffect],
+    () => (photo.liked_by_user ? unlikeEffect.run(id) : likeEffect.run(id)),
+    [id, likeEffect, photo.liked_by_user, unlikeEffect],
   );
 
   const calculateSpans = () => {
@@ -40,21 +39,21 @@ const Photo: FC<Props> = ({ urls, alt_description, id, liked_by_user }) => {
   );
 
   return (
-    <div style={{ gridRowEnd: `span ${spans}` }} className={classes.wrapper}>
+    <li style={{ gridRowEnd: `span ${spans}` }} className={classes.wrapper}>
       <img
         className={classes.image}
         ref={imageRef}
-        alt={alt_description}
-        src={urls!.small}
+        alt={photo.alt_description}
+        src={photo.urls.small}
       />
       <IconButton
         color="secondary"
         onClick={handleClick}
         className={classes.icon}
       >
-        {liked_by_user ? <Favorite /> : <FavoriteBorder />}
+        {photo.liked_by_user ? <Favorite /> : <FavoriteBorder />}
       </IconButton>
-    </div>
+    </li>
   );
 };
 
