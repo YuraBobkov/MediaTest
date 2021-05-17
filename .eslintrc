@@ -1,0 +1,31 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "google",
+    "react-app",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "script"
+  },
+  "rules": {
+    "strict": ["error", "global"],
+    "require-jsdoc": "off",
+    "camelcase": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "parserOptions": {
+        "sourceType": "module"
+      }
+    },
+    {
+      "files": ["**/*.d.ts"],
+      "rules": {
+        "spaced-comment": "off"
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "name": "TestTask",
+  "version": "1.0.0",
+  "private": true,
+  "description": "With unsplash API",
+  "author": "Yura Bobkov",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "eslint --ext .js,.ts,.tsx ."
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "@reduxjs/toolkit": "^1.5.1",
+    "@routo/core": "^0.6.1",
+    "@routo/link": "^0.6.1",
+    "@routo/react": "^0.6.1",
+    "@routo/redux": "^0.6.1",
+    "abort-controller": "^3.0.0",
+    "axios": "^0.21.1",
+    "react": "^16.14.0",
+    "react-app-polyfill": "^2.0.0",
+    "react-dom": "^16.14.0",
+    "react-jss": "^10.6.0",
+    "react-redux": "^7.2.4",
+    "remeda": "^0.0.27"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.4",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-redux": "^7.1.16",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1",
+    "react-scripts": "^4.0.3",
+    "typescript": "^4.2.4"
+  }
+}
