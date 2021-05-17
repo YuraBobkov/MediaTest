@@ -2,14 +2,6 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import config from '../../config';
 
-const createFormParams = (params: any) => {
-  return Object.keys(params)
-    .map(
-      (key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`,
-    )
-    .join('&');
-};
-
 const secret =
   process.env.REACT_APP_CLIENT_ACCESS +
   ':' +
@@ -27,13 +19,20 @@ const apiConfig: AxiosRequestConfig = {
 
 export const axiosInstance = axios.create(apiConfig);
 
-export const getToken = async (code: string) =>
-  await axiosInstance.post('/oauth/token', {
-    data: createFormParams({
-      client_id: config.apiClientId,
-      client_secret: config.apiClientSecret,
-      redirect_uri: 'http://localhost:3000',
-      code,
-      grant_type: 'authorization_code',
-    }),
-  });
+export const getToken = async (code: string) => {
+  try {
+    const { data } = await axiosInstance.post('/oauth/token', {
+      data: {
+        client_id: config.apiClientId,
+        client_secret: config.apiClientSecret,
+        redirect_uri: 'http://localhost:3000',
+        code,
+        grant_type: 'authorization_code',
+      },
+    });
+    console.log('🚀 ~ data', data);
+    return data.access_token;
+  } catch (error) {
+    console.log('🚀 ~ error', error);
+  }
+};

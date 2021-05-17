@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { FC, Fragment, useCallback } from 'react';
+import React, { FC, Fragment, useCallback, useMemo } from 'react';
 
 import SearchInput from 'src/components/SearchInput';
 import config from 'src/config';
@@ -14,6 +14,7 @@ import { useStyles } from './styles';
 const Photos: FC = () => {
   const classes = useStyles();
   const token = localStorage.getItem('token');
+  console.log('🚀 ~ token', token);
 
   const findPhotosEffect = useFindPhotos();
 
@@ -27,27 +28,31 @@ const Photos: FC = () => {
     [findPhotosEffect],
   );
 
-  const loginButton = token ? (
-    <Button
-      color="primary"
-      variant="contained"
-      onClick={() => localStorage.removeItem('token')}
-    >
-      Log out
-    </Button>
-  ) : (
-    <Button
-      color="primary"
-      variant="contained"
-      component="a"
-      href={`https://unsplash.com/oauth/authorize?client_id=${
-        config.apiClientId
-      }&response_type=code&redirect_uri=${encodeURIComponent(
-        'http://localhost:3000/auth',
-      )}&scope=public+write_likes`}
-    >
-      Log In
-    </Button>
+  const loginButton = useMemo(
+    () =>
+      token ? (
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => localStorage.removeItem('token')}
+        >
+          Log out
+        </Button>
+      ) : (
+        <Button
+          color="primary"
+          variant="contained"
+          component="a"
+          href={`https://unsplash.com/oauth/authorize?client_id=${
+            config.apiClientId
+          }&response_type=code&redirect_uri=${encodeURIComponent(
+            'http://localhost:3000/auth',
+          )}&scope=public+write_likes`}
+        >
+          Log In
+        </Button>
+      ),
+    [token],
   );
 
   return (

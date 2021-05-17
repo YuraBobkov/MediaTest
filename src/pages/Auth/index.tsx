@@ -12,7 +12,7 @@ const Auth: FC = () => {
     if (code) {
       const token = getToken(code);
       localStorage.setItem('token', token.toString());
-      replace('/');
+      // replace('/');
     }
   }, [getState, replace]);
   return <Spinner />;
